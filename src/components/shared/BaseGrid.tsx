@@ -12,6 +12,8 @@ import {
   DateFilterModule,
   PaginationModule,
   TextEditorModule,
+  NumberEditorModule,
+  DateEditorModule,
   SelectEditorModule,
   UndoRedoEditModule,
   GridReadyEvent,
@@ -26,6 +28,8 @@ ModuleRegistry.registerModules([
   DateFilterModule,
   PaginationModule,
   TextEditorModule,
+  NumberEditorModule,
+  DateEditorModule,
   SelectEditorModule,
   UndoRedoEditModule
 ]);
