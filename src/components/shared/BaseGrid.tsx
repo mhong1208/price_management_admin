@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
   ColDef,
@@ -13,7 +13,9 @@ import {
   PaginationModule,
   TextEditorModule,
   SelectEditorModule,
-  UndoRedoEditModule
+  UndoRedoEditModule,
+  GridReadyEvent,
+  CellValueChangedEvent
 } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([
@@ -28,27 +30,28 @@ ModuleRegistry.registerModules([
   UndoRedoEditModule
 ]);
 
-interface BaseGridProps {
-  rowData: any[];
-  columnDefs: ColDef[];
+interface BaseGridProps<T = Record<string, unknown>> {
+  rowData: T[];
+  columnDefs: ColDef<T>[];
   pagination?: boolean;
   paginationPageSize?: number;
-  onGridReady?: (params: any) => void;
-  [key: string]: any;
+  onGridReady?: (params: GridReadyEvent<T>) => void;
+  onCellValueChanged?: (event: CellValueChangedEvent<T>) => void;
+  [key: string]: unknown;
 }
 
-const BaseGrid: React.FC<BaseGridProps> = ({
+const BaseGrid = <T extends Record<string, unknown>>({
   rowData,
   columnDefs,
   pagination = true,
   paginationPageSize = 10,
   onGridReady,
   ...rest
-}) => {
-  const defaultColDef = useMemo(() => ({
+}: BaseGridProps<T>) => {
+  const defaultColDef = useMemo<ColDef<T>>(() => ({
     flex: 1,
     minWidth: 100,
-    filter: true,
+    filter: false,
     sortable: true,
     unSortIcon: true,
     resizable: true,
@@ -56,7 +59,7 @@ const BaseGrid: React.FC<BaseGridProps> = ({
 
   return (
     <div className="ag-theme-alpine" style={{ width: '100%', height: '500px' }}>
-      <AgGridReact
+      <AgGridReact<T>
         rowData={rowData}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
