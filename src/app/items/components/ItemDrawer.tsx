@@ -9,6 +9,7 @@ interface ItemDrawerProps {
   initialValues?: Item | null;
   onSave: (values: any) => void;
   loading?: boolean;
+  readOnly?: boolean;
 }
 
 const ItemDrawer: React.FC<ItemDrawerProps> = ({
@@ -17,6 +18,7 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
   initialValues,
   onSave,
   loading = false,
+  readOnly = false,
 }) => {
   const [form] = Form.useForm();
   const isEdit = !!initialValues;
@@ -40,17 +42,19 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
 
   return (
     <Drawer
-      title={isEdit ? 'Chỉnh sửa hàng hóa' : 'Thêm mới hàng hóa'}
+      title={readOnly ? 'Chi tiết hàng hóa' : (isEdit ? 'Chỉnh sửa hàng hóa' : 'Thêm mới hàng hóa')}
       size='large'
       onClose={onClose}
       open={open}
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={onClose}>Hủy</Button>
-            <Button onClick={handleSubmit} type="primary" loading={loading}>
-              {isEdit ? 'Cập nhật' : 'Thêm mới'}
-            </Button>
+            <Button onClick={onClose}>{readOnly ? 'Đóng' : 'Hủy'}</Button>
+            {!readOnly && (
+              <Button onClick={handleSubmit} type="primary" loading={loading}>
+                {isEdit ? 'Cập nhật' : 'Thêm mới'}
+              </Button>
+            )}
           </Space>
         </div>
       }
@@ -59,6 +63,7 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
       <Form
         form={form}
         layout="vertical"
+        disabled={readOnly}
       >
         <Form.Item
           name="itemCode"

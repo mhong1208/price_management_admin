@@ -16,6 +16,7 @@ const ItemsPage = () => {
   const [searchText, setSearchText] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isViewOnly, setIsViewOnly] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [items, setItems] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -62,11 +63,19 @@ const ItemsPage = () => {
 
   const handleAdd = () => {
     setSelectedItem(null);
+    setIsViewOnly(false);
     setIsDrawerOpen(true);
   };
 
   const handleEdit = (item: Item) => {
     setSelectedItem(item);
+    setIsViewOnly(false);
+    setIsDrawerOpen(true);
+  };
+
+  const handleView = (item: Item) => {
+    setSelectedItem(item);
+    setIsViewOnly(true);
     setIsDrawerOpen(true);
   };
 
@@ -184,6 +193,7 @@ const ItemsPage = () => {
         const hasChanges = changes.has(params.data.id);
         return (
           <TableActions
+            onView={() => handleView(params.data)}
             onEdit={() => handleEdit(params.data)}
             onDelete={() => handleDelete(params.data)}
             isSaving={loading && hasChanges}
@@ -295,6 +305,7 @@ const ItemsPage = () => {
         initialValues={selectedItem}
         onSave={handleSave}
         loading={loading}
+        readOnly={isViewOnly}
       />
     </div>
   );
