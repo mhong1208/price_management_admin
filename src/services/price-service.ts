@@ -49,8 +49,9 @@ export const priceService = {
   },
 
   getPriceHistory: async (itemId: string, supplierId: string): Promise<PriceHistory[]> => {
-    return apiClient.get(`${EndPoint.Prices}/history`, {
-      params: { itemId, supplierId }
+    const response = await apiClient.get<PaginationResponse<PriceHistory>>(`${EndPoint.Prices}/history`, {
+      params: { itemId, supplierId, skip: 0, take: 100 }
     });
+    return (response as any).items || [];
   },
 };

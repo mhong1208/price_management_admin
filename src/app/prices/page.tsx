@@ -10,12 +10,20 @@ import PriceDrawer from './components/PriceDrawer';
 import PriceHistoryModal from './components/PriceHistoryModal';
 import { Price } from '@/interfaces/price';
 import { priceService } from '@/services/price-service';
+import { itemService } from '@/services/item-service';
+import { supplierService } from '@/services/supplier-service';
+import { Item } from '@/interfaces/item';
+import { Supplier } from '@/interfaces/supplier';
 import { CURRENCIES } from '@/constants/item-enums';
 
 const PricesPage = () => {
   const { message, modal } = App.useApp();
   const [searchText, setSearchText] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [filterItemId, setFilterItemId] = useState<string | null>(null);
+  const [filterSupplierId, setFilterSupplierId] = useState<string | null>(null);
+  const [items, setItems] = useState<Item[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isViewOnly, setIsViewOnly] = useState(false);
@@ -37,9 +45,26 @@ const PricesPage = () => {
   }, [searchText]);
 
   useEffect(() => {
+    loadFilterOptions();
+  }, []);
+
+  const loadFilterOptions = async () => {
+    try {
+      const [itemsRes, suppliersRes] = await Promise.all([
+        itemService.getItems(),
+        supplierService.getSuppliers(),
+      ]);
+      setItems(itemsRes);
+      setSuppliers(suppliersRes);
+    } catch (error) {
+      console.error('Failed to load filter options', error);
+    }
+  };
+
+  useEffect(() => {
     fetchPrices();
     setChanges(new Map());
-  }, [currentPage, pageSize, debouncedSearch]);
+  }, [currentPage, pageSize, debouncedSearch, filterItemId, filterSupplierId]);
 
   const fetchPrices = async () => {
     try {
@@ -48,6 +73,8 @@ const PricesPage = () => {
         skip: (currentPage - 1) * pageSize,
         take: pageSize,
         searchText: debouncedSearch || null,
+        itemId: filterItemId,
+        supplierId: filterSupplierId,
       });
       setPrices(response.items);
       setTotalCount(response.totalCount);
@@ -217,9 +244,35 @@ const PricesPage = () => {
                   prefix={<SearchOutlined />}
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
-                  style={{ width: 300 }}
+                  style={{ width: 250 }}
                   allowClear
                 />
+                <Select
+                  placeholder="Lọc theo mặt hàng"
+                  style={{ width: 200 }}
+                  allowClear
+                  value={filterItemId}
+                  onChange={setFilterItemId}
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {items.map(i => (
+                    <Select.Option key={i.id} value={i.id}>{i.itemCode} - {i.itemName}</Select.Option>
+                  ))}
+                </Select>
+                <Select
+                  placeholder="Lọc theo nhà cung cấp"
+                  style={{ width: 200 }}
+                  allowClear
+                  value={filterSupplierId}
+                  onChange={setFilterSupplierId}
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {suppliers.map(s => (
+                    <Select.Option key={s.id} value={s.id}>{s.supplierCode} - {s.supplierName}</Select.Option>
+                  ))}
+                </Select>
               </Space>
             )
           }
