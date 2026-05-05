@@ -48,7 +48,6 @@ const PriceHistoryModal: React.FC<PriceHistoryModalProps> = ({
       title: 'Ngày hiệu lực',
       dataIndex: 'effectiveDate',
       key: 'effectiveDate',
-      render: (date: string) => formatDateVN(date),
     },
     {
       title: 'Giá cũ',

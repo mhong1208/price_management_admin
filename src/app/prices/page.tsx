@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Typography, Button, Space, App, Pagination, Input, Select, Collapse } from 'antd';
 import { PlusOutlined, SaveOutlined, SearchOutlined } from '@ant-design/icons';
-import { formatDateVN } from '@/utils/date-utils';
+import dayjs from '@/utils/date-utils';
 import BaseGrid from '@/components/shared/BaseGrid';
 import TableActions from '@/components/shared/TableActions';
 import PriceDrawer from './components/PriceDrawer';
@@ -181,7 +181,7 @@ const PricesPage = () => {
       field: 'effectiveDate',
       minWidth: 150,
       editable: true,
-      valueFormatter: (params: any) => formatDateVN(params.value)
+      valueFormatter: (params: any) => dayjs(params.value).format('DD/MM/YYYY')
     },
     {
       headerName: 'Thao tác',

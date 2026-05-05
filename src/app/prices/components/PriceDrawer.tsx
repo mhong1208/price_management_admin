@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, Form, Input, Button, Select, Space, Row, Col, DatePicker, InputNumber } from 'antd';
-import dayjs from 'dayjs';
+import dayjs from '@/utils/date-utils';
 import { Price } from '@/interfaces/price';
 import { CURRENCIES } from '@/constants/item-enums';
 import { itemService } from '@/services/item-service';
@@ -37,11 +37,14 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
       if (initialValues) {
         form.setFieldsValue({
           ...initialValues,
-          effectiveDate: initialValues.effectiveDate ? dayjs(initialValues.effectiveDate) : null,
+          effectiveDate: initialValues.effectiveDate ? dayjs.utc(initialValues.effectiveDate).tz('Asia/Ho_Chi_Minh') : null,
         });
       } else {
         form.resetFields();
-        form.setFieldsValue({ currency: 'VND', effectiveDate: dayjs() });
+        form.setFieldsValue({ 
+          currency: 'VND', 
+          effectiveDate: dayjs().tz('Asia/Ho_Chi_Minh') 
+        });
       }
     }
   }, [open, initialValues, form]);
@@ -66,7 +69,8 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
     form.validateFields().then((values) => {
       const formattedValues = {
         ...values,
-        effectiveDate: values.effectiveDate?.toISOString(),
+        // Keep it as a string in ISO format for the API, but ensure it's at start of day in local time
+        effectiveDate: values.effectiveDate?.startOf('day').toISOString(),
       };
       onSave(formattedValues);
     });
