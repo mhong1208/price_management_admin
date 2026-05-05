@@ -3,6 +3,7 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost
 export const APP_ROUTES = {
   DASHBOARD: '/',
   ITEMS: '/items',
+  SUPPLIERS: '/suppliers',
   PRICES: '/prices',
 };
 

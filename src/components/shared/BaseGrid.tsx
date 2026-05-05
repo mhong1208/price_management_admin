@@ -58,7 +58,7 @@ const BaseGrid = <T extends Record<string, unknown>>({
   }), []);
 
   return (
-    <div className="ag-theme-alpine" style={{ width: '100%', height: '500px' }}>
+    <div className="ag-theme-alpine" style={{ width: '100%', height: '400px' }}>
       <AgGridReact<T>
         rowData={rowData}
         columnDefs={columnDefs}

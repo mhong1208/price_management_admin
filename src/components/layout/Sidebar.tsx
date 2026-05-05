@@ -28,6 +28,11 @@ const Sidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
       label: 'Quản lý Hàng hóa',
     },
     {
+      key: APP_ROUTES.SUPPLIERS,
+      icon: <DatabaseOutlined />,
+      label: 'Quản lý Nhà cung cấp',
+    },
+    {
       key: APP_ROUTES.PRICES,
       icon: <DollarOutlined />,
       label: 'Quản lý Giá',
