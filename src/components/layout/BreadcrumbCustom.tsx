@@ -9,6 +9,7 @@ import { HomeOutlined } from '@ant-design/icons';
 const breadcrumbNameMap: Record<string, string> = {
   '/': 'Trang chủ',
   '/items': 'Quản lý Hàng hóa',
+  '/suppliers': 'Quản lý Nhà cung cấp',
   '/prices': 'Quản lý Giá',
 };
 
@@ -37,13 +38,12 @@ const BreadcrumbCustom: React.FC = () => {
     ...extraBreadcrumbItems,
   ];
 
-  // Filter out the home item if we are on the home page to avoid duplication
   const finalItems = pathname === '/' ? [breadcrumbItems[0]] : breadcrumbItems;
 
   return (
     <Breadcrumb
       items={finalItems}
-      style={{ margin: '16px 16px 0' }}
+      style={{ margin: '8px 8px 0' }}
     />
   );
 };

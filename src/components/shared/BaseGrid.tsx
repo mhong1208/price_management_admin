@@ -4,24 +4,28 @@ import React, { useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
   ColDef,
-  GridOptions,
   ModuleRegistry,
   ClientSideRowModelModule,
   ValidationModule,
   TextFilterModule,
   NumberFilterModule,
   DateFilterModule,
-  PaginationModule
+  PaginationModule,
+  TextEditorModule,
+  SelectEditorModule,
+  UndoRedoEditModule
 } from 'ag-grid-community';
 
-// Register AG Grid Modules
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   ValidationModule,
   TextFilterModule,
   NumberFilterModule,
   DateFilterModule,
-  PaginationModule
+  PaginationModule,
+  TextEditorModule,
+  SelectEditorModule,
+  UndoRedoEditModule
 ]);
 
 interface BaseGridProps {
@@ -46,11 +50,12 @@ const BaseGrid: React.FC<BaseGridProps> = ({
     minWidth: 100,
     filter: true,
     sortable: true,
+    unSortIcon: true,
     resizable: true,
   }), []);
 
   return (
-    <div className="ag-theme-alpine" style={{ width: '100%', height: '600px' }}>
+    <div className="ag-theme-alpine" style={{ width: '100%', height: '500px' }}>
       <AgGridReact
         rowData={rowData}
         columnDefs={columnDefs}
@@ -59,6 +64,9 @@ const BaseGrid: React.FC<BaseGridProps> = ({
         paginationPageSize={paginationPageSize}
         paginationPageSizeSelector={[10, 20, 50, 100]}
         onGridReady={onGridReady}
+        undoRedoCellEditing={true}
+        undoRedoCellEditingLimit={10}
+        stopEditingWhenCellsLoseFocus={true}
         {...rest}
       />
     </div>
