@@ -1,16 +1,18 @@
 import React from 'react';
 import { Space, Button, Tooltip } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined, SaveOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined, SaveOutlined, HistoryOutlined } from '@ant-design/icons';
 
 interface TableActionsProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onView?: () => void;
   onSave?: () => void;
+  onHistory?: () => void;
   editTooltip?: string;
   deleteTooltip?: string;
   viewTooltip?: string;
   saveTooltip?: string;
+  historyTooltip?: string;
   isSaving?: boolean;
 }
 
@@ -19,10 +21,12 @@ const TableActions: React.FC<TableActionsProps> = ({
   onDelete,
   onView,
   onSave,
+  onHistory,
   editTooltip = 'Chỉnh sửa',
   deleteTooltip = 'Xóa',
   viewTooltip = 'Xem chi tiết',
   saveTooltip = 'Lưu thay đổi',
+  historyTooltip = 'Lịch sử thay đổi',
   isSaving = false,
 }) => {
   return (
@@ -96,6 +100,24 @@ const TableActions: React.FC<TableActionsProps> = ({
             onClick={(e) => {
               e.stopPropagation();
               onSave();
+            }}
+          />
+        </Tooltip>
+      )}
+      {onHistory && (
+        <Tooltip title={historyTooltip}>
+          <Button
+            type="text"
+            size="small"
+            style={{
+              backgroundColor: '#f9f0ff',
+              color: '#722ed1',
+              borderRadius: '4px'
+            }}
+            icon={<HistoryOutlined />}
+            onClick={(e) => {
+              e.stopPropagation();
+              onHistory();
             }}
           />
         </Tooltip>

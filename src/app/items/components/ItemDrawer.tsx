@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { Drawer, Form, Input, Button, Select, Space, Row, Col } from 'antd';
-import { Item } from '@/interfaces/item';
+import { Drawer, Form, Input, Button, Select, Space, Row, Col, Table, Typography, Divider } from 'antd';
+import { Item, SupplierPrice } from '@/interfaces/item';
 import { ITEM_UNITS, ITEM_CATEGORIES } from '@/constants/item-enums';
+
+const { Text } = Typography;
 
 interface ItemDrawerProps {
   open: boolean;
@@ -39,6 +41,35 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
       onSave(values);
     });
   };
+
+  const supplierColumns = [
+    {
+      title: 'Nhà cung cấp',
+      dataIndex: ['supplier', 'supplierName'],
+      key: 'supplierName',
+      render: (text: string, record: SupplierPrice) => (
+        <Space orientation="vertical" size={0}>
+          <Text strong>{text}</Text>
+          <Text type="secondary" style={{ fontSize: '12px' }}>{record.supplier.supplierCode}</Text>
+        </Space>
+      )
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price: number, record: SupplierPrice) => (
+        <Text strong>
+          {new Intl.NumberFormat().format(price)} {record.currency}
+        </Text>
+      )
+    },
+    {
+      title: 'Ngày hiệu lực',
+      dataIndex: 'effectiveDate',
+      key: 'effectiveDate',
+    },
+  ];
 
   return (
     <Drawer
@@ -125,6 +156,20 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
           </Select>
         </Form.Item>
       </Form>
+
+      {readOnly && initialValues?.supplierPrices && initialValues.supplierPrices.length > 0 && (
+        <>
+          <Divider>Danh sách nhà cung cấp & Giá</Divider>
+          <Table
+            dataSource={initialValues.supplierPrices}
+            columns={supplierColumns}
+            pagination={false}
+            rowKey="id"
+            size="small"
+            bordered
+          />
+        </>
+      )}
     </Drawer>
   );
 };

@@ -73,10 +73,18 @@ const ItemsPage = () => {
     setIsDrawerOpen(true);
   };
 
-  const handleView = (item: Item) => {
-    setSelectedItem(item);
-    setIsViewOnly(true);
-    setIsDrawerOpen(true);
+  const handleView = async (item: Item) => {
+    try {
+      setLoading(true);
+      const detail = await itemService.getItemById(item.id.toString());
+      setSelectedItem(detail);
+      setIsViewOnly(true);
+      setIsDrawerOpen(true);
+    } catch (error) {
+      message.error('Không thể tải thông tin chi tiết mặt hàng');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSave = async (values: any) => {
