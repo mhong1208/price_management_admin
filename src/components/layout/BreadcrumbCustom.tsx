@@ -1,0 +1,51 @@
+'use client';
+
+import React from 'react';
+import { Breadcrumb } from 'antd';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { HomeOutlined } from '@ant-design/icons';
+
+const breadcrumbNameMap: Record<string, string> = {
+  '/': 'Trang chủ',
+  '/items': 'Quản lý Hàng hóa',
+  '/prices': 'Quản lý Giá',
+};
+
+const BreadcrumbCustom: React.FC = () => {
+  const pathname = usePathname();
+  const pathSnippets = pathname.split('/').filter((i) => i);
+
+  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+    return {
+      key: url,
+      title: <Link href={url}>{breadcrumbNameMap[url] || url}</Link>,
+    };
+  });
+
+  const breadcrumbItems = [
+    {
+      title: (
+        <Link href="/">
+          <HomeOutlined />
+          <span> Trang chủ</span>
+        </Link>
+      ),
+      key: 'home',
+    },
+    ...extraBreadcrumbItems,
+  ];
+
+  // Filter out the home item if we are on the home page to avoid duplication
+  const finalItems = pathname === '/' ? [breadcrumbItems[0]] : breadcrumbItems;
+
+  return (
+    <Breadcrumb
+      items={finalItems}
+      style={{ margin: '16px 16px 0' }}
+    />
+  );
+};
+
+export default BreadcrumbCustom;

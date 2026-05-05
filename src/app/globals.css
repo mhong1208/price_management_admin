@@ -1,0 +1,97 @@
+/* Global Styles */
+:root {
+  --primary-color: #f2a900;
+  --primary-hover: #ffb81a;
+  --primary-light: #fff7e6;
+  --bg-color: #f5f5f5;
+  --text-color: #333;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.admin-content-wrapper {
+  margin: 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  min-height: 280px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+.admin-footer {
+  text-align: center;
+  padding: 16px 0;
+  color: #888;
+}
+
+.sidebar-logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--primary-light);
+}
+
+.sidebar-logo h1 {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #d48806 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-bar {
+  background: #fff;
+  border: 1px solid var(--primary-light);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Customizing Ant Design Menu for the tone */
+.ant-menu-item-selected {
+  background-color: var(--primary-light) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
+
+.ant-menu-item-selected .anticon {
+  color: var(--primary-color) !important;
+}
+
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid var(--primary-color) !important;
+}
