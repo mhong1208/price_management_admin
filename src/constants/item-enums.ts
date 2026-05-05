@@ -25,7 +25,7 @@ export const ITEM_CATEGORIES: ItemEnumOption[] = [
   { code: 'MCG', name: 'Mother & Child Gear' },
   { code: 'MTX', name: 'Medical Textiles' },
   { code: 'EAC', name: 'Electronic Accessories' },
-  { code: 'RMT', name: 'Raw Materials (Nguyên vật liệu)' },
+  { code: 'RMT', name: 'Raw Materials' },
 ];
 
 export const CURRENCIES: ItemEnumOption[] = [

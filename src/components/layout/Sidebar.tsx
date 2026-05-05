@@ -5,7 +5,8 @@ import { Layout, Menu } from 'antd';
 import {
   DashboardOutlined,
   DatabaseOutlined,
-  DollarOutlined
+  DollarOutlined,
+  ShopOutlined,
 } from '@ant-design/icons';
 import { useRouter, usePathname } from 'next/navigation';
 import { APP_ROUTES } from '@/constants/app-constants';
@@ -20,22 +21,22 @@ const Sidebar: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     {
       key: APP_ROUTES.DASHBOARD,
       icon: <DashboardOutlined />,
-      label: 'Trang chủ',
+      label: 'Dashboard',
     },
     {
       key: APP_ROUTES.ITEMS,
       icon: <DatabaseOutlined />,
-      label: 'Quản lý Hàng hóa',
+      label: 'Item Management',
     },
     {
       key: APP_ROUTES.SUPPLIERS,
-      icon: <DatabaseOutlined />,
-      label: 'Quản lý Nhà cung cấp',
+      icon: <ShopOutlined />,
+      label: 'Supplier Management',
     },
     {
       key: APP_ROUTES.PRICES,
       icon: <DollarOutlined />,
-      label: 'Quản lý Giá',
+      label: 'Price Management',
     },
   ];
 

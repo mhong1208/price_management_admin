@@ -50,7 +50,7 @@ const SuppliersPage = () => {
       setSuppliers(response.items);
       setTotalCount(response.totalCount);
     } catch (error) {
-      message.error('Không thể tải danh sách nhà cung cấp');
+      message.error('Failed to load supplier list');
     } finally {
       setLoading(false);
     }
@@ -79,15 +79,15 @@ const SuppliersPage = () => {
       setLoading(true);
       if (selectedSupplier) {
         await supplierService.updateSupplier(selectedSupplier.id.toString(), values);
-        message.success('Cập nhật nhà cung cấp thành công');
+        message.success('Supplier updated successfully');
       } else {
         await supplierService.createSupplier(values);
-        message.success('Thêm mới nhà cung cấp thành công');
+        message.success('New supplier created successfully');
       }
       setIsDrawerOpen(false);
       fetchSuppliers();
     } catch (error) {
-      message.error('Lỗi khi lưu nhà cung cấp');
+      message.error('Error saving supplier');
     } finally {
       setLoading(false);
     }
@@ -95,18 +95,18 @@ const SuppliersPage = () => {
 
   const handleDelete = (supplier: Supplier) => {
     modal.confirm({
-      title: 'Xác nhận xóa',
-      content: `Bạn có chắc chắn muốn xóa nhà cung cấp "${supplier.supplierName}"?`,
-      okText: 'Xóa',
+      title: 'Confirm Delete',
+      content: `Are you sure you want to delete supplier "${supplier.supplierName}"?`,
+      okText: 'Delete',
       okType: 'danger',
-      cancelText: 'Hủy',
+      cancelText: 'Cancel',
       onOk: async () => {
         try {
           await supplierService.deleteSupplier(supplier.id.toString());
-          message.success('Xóa nhà cung cấp thành công');
+          message.success('Supplier deleted successfully');
           fetchSuppliers();
         } catch (error) {
-          message.error('Lỗi khi xóa nhà cung cấp');
+          message.error('Error deleting supplier');
         }
       },
     });
@@ -130,27 +130,27 @@ const SuppliersPage = () => {
         supplierService.updateSupplier(supplier.id.toString(), supplier)
       );
       await Promise.all(updatePromises);
-      message.success(`Đã lưu ${changes.size} thay đổi thành công`);
+      message.success(`Saved ${changes.size} changes successfully`);
       setChanges(new Map());
       fetchSuppliers();
     } catch (error) {
-      message.error('Lỗi khi lưu các thay đổi');
+      message.error('Error saving changes');
     } finally {
       setLoading(false);
     }
   };
 
   const columnDefs: any[] = [
-    { field: 'supplierCode', headerName: 'Mã NCC', minWidth: 120, editable: true },
-    { field: 'supplierName', headerName: 'Tên Nhà cung cấp', minWidth: 200, editable: true },
-    { field: 'taxCode', headerName: 'Mã số thuế', minWidth: 150, editable: true },
-    { field: 'contactPerson', headerName: 'Người liên hệ', minWidth: 150, editable: true },
-    { field: 'phone', headerName: 'Số điện thoại', minWidth: 120, editable: true },
+    { field: 'supplierCode', headerName: 'Supplier Code', minWidth: 120, editable: true },
+    { field: 'supplierName', headerName: 'Supplier Name', minWidth: 200, editable: true },
+    { field: 'taxCode', headerName: 'Tax Code', minWidth: 150, editable: true },
+    { field: 'contactPerson', headerName: 'Contact Person', minWidth: 150, editable: true },
+    { field: 'phone', headerName: 'Phone', minWidth: 120, editable: true },
     { field: 'email', headerName: 'Email', minWidth: 180, editable: true },
-    { field: 'description', headerName: 'Ghi chú', minWidth: 200, editable: true },
+    { field: 'description', headerName: 'Description', minWidth: 200, editable: true },
     {
       field: 'status',
-      headerName: 'Trạng thái',
+      headerName: 'Status',
       minWidth: 120,
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -159,12 +159,12 @@ const SuppliersPage = () => {
       },
       cellRenderer: (params: any) => (
         <Tag color={params.value === 1 ? 'green' : 'red'}>
-          {params.value === 1 ? 'Hoạt động' : 'Ngừng hoạt động'}
+          {params.value === 1 ? 'Active' : 'Inactive'}
         </Tag>
       )
     },
     {
-      headerName: 'Thao tác',
+      headerName: 'Actions',
       minWidth: 100,
       pinned: 'right',
       cellRenderer: (params: any) => {
@@ -188,11 +188,11 @@ const SuppliersPage = () => {
         items={[
           {
             key: 'filter',
-            label: 'Bộ lọc tìm kiếm',
+            label: 'Search Filters',
             children: (
               <Space wrap>
                 <Input
-                  placeholder="Tìm theo mã hoặc tên..."
+                  placeholder="Search by code or name..."
                   prefix={<SearchOutlined />}
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
@@ -200,14 +200,14 @@ const SuppliersPage = () => {
                   allowClear
                 />
                 <Select
-                  placeholder="Trạng thái"
+                  placeholder="Status"
                   style={{ width: 160 }}
                   allowClear
                   value={statusFilter}
                   onChange={(value) => { setStatusFilter(value); setCurrentPage(1); }}
                 >
-                  <Select.Option value={1}>Hoạt động</Select.Option>
-                  <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+                  <Select.Option value={1}>Active</Select.Option>
+                  <Select.Option value={0}>Inactive</Select.Option>
                 </Select>
               </Space>
             )
@@ -222,7 +222,7 @@ const SuppliersPage = () => {
             icon={<PlusOutlined />}
             onClick={handleAdd}
           >
-            Thêm Nhà cung cấp
+            Add Supplier
           </Button>
           {changes.size > 0 && (
             <Button
@@ -232,7 +232,7 @@ const SuppliersPage = () => {
               onClick={handleBulkSave}
               loading={loading}
             >
-              Lưu {changes.size} thay đổi
+              Save {changes.size} changes
             </Button>
           )}
         </Space>
@@ -251,7 +251,7 @@ const SuppliersPage = () => {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
         <Typography.Text type="secondary">
-          Hiển thị {suppliers.length} / {totalCount} bản ghi
+          Showing {suppliers.length} / {totalCount} records
         </Typography.Text>
         <Pagination
           current={currentPage}

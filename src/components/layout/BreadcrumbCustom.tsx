@@ -7,10 +7,10 @@ import Link from 'next/link';
 import { HomeOutlined } from '@ant-design/icons';
 
 const breadcrumbNameMap: Record<string, string> = {
-  '/': 'Trang chủ',
-  '/items': 'Quản lý Hàng hóa',
-  '/suppliers': 'Quản lý Nhà cung cấp',
-  '/prices': 'Quản lý Giá',
+  '/': 'Dashboard',
+  '/items': 'Items',
+  '/suppliers': 'Suppliers',
+  '/prices': 'Prices',
 };
 
 const BreadcrumbCustom: React.FC = () => {
@@ -30,7 +30,7 @@ const BreadcrumbCustom: React.FC = () => {
       title: (
         <Link href="/">
           <HomeOutlined />
-          <span> Trang chủ</span>
+          <span> Dashboard</span>
         </Link>
       ),
       key: 'home',

@@ -79,7 +79,7 @@ const PricesPage = () => {
       setPrices(response.items);
       setTotalCount(response.totalCount);
     } catch (error) {
-      message.error('Không thể tải danh sách bảng giá');
+      message.error('Failed to load price list');
     } finally {
       setLoading(false);
     }
@@ -113,15 +113,15 @@ const PricesPage = () => {
       setLoading(true);
       if (selectedPrice) {
         await priceService.updatePrice(selectedPrice.id.toString(), values);
-        message.success('Cập nhật bảng giá thành công');
+        message.success('Price list updated successfully');
       } else {
         await priceService.createPrice(values);
-        message.success('Thiết lập giá mới thành công');
+        message.success('New price setup successfully');
       }
       setIsDrawerOpen(false);
       fetchPrices();
     } catch (error) {
-      message.error('Lỗi khi lưu bảng giá');
+      message.error('Error saving price list');
     } finally {
       setLoading(false);
     }
@@ -129,17 +129,17 @@ const PricesPage = () => {
 
   const handleDelete = (price: Price) => {
     modal.confirm({
-      title: 'Xác nhận xóa',
-      content: `Xóa thiết lập giá cho mặt hàng "${price.item?.itemName}" từ NCC "${price.supplier?.supplierName}"?`,
-      okText: 'Xóa',
+      title: 'Confirm Delete',
+      content: `Delete price setup for item "${price.item?.itemName}" from supplier "${price.supplier?.supplierName}"?`,
+      okText: 'Delete',
       okType: 'danger',
       onOk: async () => {
         try {
           await priceService.deletePrice(price.id.toString());
-          message.success('Xóa bản ghi thành công');
+          message.success('Record deleted successfully');
           fetchPrices();
         } catch (error) {
-          message.error('Lỗi khi xóa bản ghi');
+          message.error('Error deleting record');
         }
       },
     });
@@ -162,11 +162,11 @@ const PricesPage = () => {
         priceService.updatePrice(p.id.toString(), p)
       );
       await Promise.all(updatePromises);
-      message.success(`Đã lưu ${changes.size} thay đổi thành công`);
+      message.success(`Saved ${changes.size} changes successfully`);
       setChanges(new Map());
       fetchPrices();
     } catch (error) {
-      message.error('Lỗi khi lưu các thay đổi');
+      message.error('Error saving changes');
     } finally {
       setLoading(false);
     }
@@ -174,19 +174,19 @@ const PricesPage = () => {
 
   const columnDefs: any[] = [
     {
-      headerName: 'Mặt hàng',
+      headerName: 'Item',
       field: 'item.itemName',
       minWidth: 200,
       valueGetter: (params: any) => `${params.data.item?.itemCode} - ${params.data.item?.itemName}`
     },
     {
-      headerName: 'Nhà cung cấp',
+      headerName: 'Supplier',
       field: 'supplier.supplierName',
       minWidth: 200,
       valueGetter: (params: any) => `${params.data.supplier?.supplierCode} - ${params.data.supplier?.supplierName}`
     },
     {
-      headerName: 'Giá',
+      headerName: 'Price',
       field: 'price',
       minWidth: 120,
       editable: true,
@@ -194,7 +194,7 @@ const PricesPage = () => {
       valueFormatter: (params: any) => new Intl.NumberFormat().format(params.value)
     },
     {
-      headerName: 'Tiền tệ',
+      headerName: 'Currency',
       field: 'currency',
       minWidth: 100,
       editable: true,
@@ -204,14 +204,14 @@ const PricesPage = () => {
       }
     },
     {
-      headerName: 'Ngày hiệu lực',
+      headerName: 'Effective Date',
       field: 'effectiveDate',
       minWidth: 150,
       editable: true,
       valueFormatter: (params: any) => dayjs(params.value).format('DD/MM/YYYY')
     },
     {
-      headerName: 'Thao tác',
+      headerName: 'Actions',
       minWidth: 120,
       pinned: 'right',
       cellRenderer: (params: any) => {
@@ -236,11 +236,11 @@ const PricesPage = () => {
         items={[
           {
             key: 'filter',
-            label: 'Bộ lọc tìm kiếm',
+            label: 'Search Filters',
             children: (
               <Space wrap>
                 <Input
-                  placeholder="Tìm theo hàng hóa hoặc NCC..."
+                  placeholder="Search by item or supplier..."
                   prefix={<SearchOutlined />}
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
@@ -248,7 +248,7 @@ const PricesPage = () => {
                   allowClear
                 />
                 <Select
-                  placeholder="Lọc theo mặt hàng"
+                  placeholder="Filter by item"
                   style={{ width: 200 }}
                   allowClear
                   value={filterItemId}
@@ -261,7 +261,7 @@ const PricesPage = () => {
                   ))}
                 </Select>
                 <Select
-                  placeholder="Lọc theo nhà cung cấp"
+                  placeholder="Filter by supplier"
                   style={{ width: 200 }}
                   allowClear
                   value={filterSupplierId}
@@ -286,7 +286,7 @@ const PricesPage = () => {
             icon={<PlusOutlined />}
             onClick={handleAdd}
           >
-            Thiết lập giá mới
+            Setup New Price
           </Button>
           {changes.size > 0 && (
             <Button
@@ -296,7 +296,7 @@ const PricesPage = () => {
               onClick={handleBulkSave}
               loading={loading}
             >
-              Lưu {changes.size} thay đổi
+              Save {changes.size} changes
             </Button>
           )}
         </Space>
@@ -315,7 +315,7 @@ const PricesPage = () => {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
         <Typography.Text type="secondary">
-          Hiển thị {prices.length} / {totalCount} bản ghi
+          Showing {prices.length} / {totalCount} records
         </Typography.Text>
         <Pagination
           current={currentPage}

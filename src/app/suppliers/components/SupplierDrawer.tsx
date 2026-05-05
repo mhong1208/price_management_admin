@@ -41,17 +41,17 @@ const SupplierDrawer: React.FC<SupplierDrawerProps> = ({
 
   return (
     <Drawer
-      title={readOnly ? 'Chi tiết nhà cung cấp' : (isEdit ? 'Chỉnh sửa nhà cung cấp' : 'Thêm mới nhà cung cấp')}
+      title={readOnly ? 'Supplier Details' : (isEdit ? 'Edit Supplier' : 'Add New Supplier')}
       size='large'
       onClose={onClose}
       open={open}
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={onClose}>{readOnly ? 'Đóng' : 'Hủy'}</Button>
+            <Button onClick={onClose}>{readOnly ? 'Close' : 'Cancel'}</Button>
             {!readOnly && (
               <Button onClick={handleSubmit} type="primary" loading={loading}>
-                {isEdit ? 'Cập nhật' : 'Thêm mới'}
+                {isEdit ? 'Update' : 'Add New'}
               </Button>
             )}
           </Space>
@@ -66,69 +66,69 @@ const SupplierDrawer: React.FC<SupplierDrawerProps> = ({
       >
         <Form.Item
           name="supplierCode"
-          label="Mã nhà cung cấp"
-          tooltip="Hệ thống tự động sinh mã nếu để trống"
+          label="Supplier Code"
+          tooltip="System automatically generates a code if left empty"
         >
-          <Input placeholder="Tự động sinh mã" disabled={isEdit} />
+          <Input placeholder="Auto-generate code" disabled={isEdit} />
         </Form.Item>
         <Form.Item
           name="supplierName"
-          label="Tên nhà cung cấp"
-          rules={[{ required: true, message: 'Vui lòng nhập tên nhà cung cấp' }]}
+          label="Supplier Name"
+          rules={[{ required: true, message: 'Please enter supplier name' }]}
         >
-          <Input placeholder="Ví dụ: Công ty TNHH ABC" />
+          <Input placeholder="Example: ABC Company" />
         </Form.Item>
         <Form.Item
           name="taxCode"
-          label="Mã số thuế"
+          label="Tax Code"
         >
-          <Input placeholder="Nhập mã số thuế doanh nghiệp" />
+          <Input placeholder="Enter company tax code" />
         </Form.Item>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="contactPerson"
-              label="Người liên hệ"
+              label="Contact Person"
             >
-              <Input placeholder="Ví dụ: Nguyễn Văn A" />
+              <Input placeholder="Example: John Doe" />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="phone"
-              label="Số điện thoại"
+              label="Phone"
             >
-              <Input placeholder="Ví dụ: 0987654321" />
+              <Input placeholder="Example: 0987654321" />
             </Form.Item>
           </Col>
         </Row>
         <Form.Item
           name="email"
           label="Email"
-          rules={[{ type: 'email', message: 'Email không hợp lệ' }]}
+          rules={[{ type: 'email', message: 'Invalid email' }]}
         >
-          <Input placeholder="Ví dụ: contact@abc.com" />
+          <Input placeholder="Example: contact@abc.com" />
         </Form.Item>
         <Form.Item
           name="address"
-          label="Địa chỉ"
+          label="Address"
         >
-          <Input.TextArea rows={2} placeholder="Ví dụ: 123 Đường ABC, Quận 1, TP. HCM" />
+          <Input.TextArea rows={2} placeholder="Example: 123 ABC Street, District 1, HCM City" />
         </Form.Item>
         <Form.Item
           name="description"
-          label="Ghi chú/Mô tả"
+          label="Notes/Description"
         >
-          <Input.TextArea rows={3} placeholder="Nhập ghi chú thêm về nhà cung cấp" />
+          <Input.TextArea rows={3} placeholder="Enter additional notes about the supplier" />
         </Form.Item>
         <Form.Item
           name="status"
-          label="Trạng thái"
-          rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
+          label="Status"
+          rules={[{ required: true, message: 'Please select status' }]}
         >
           <Select>
-            <Select.Option value={1}>Hoạt động</Select.Option>
-            <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+            <Select.Option value={1}>Active</Select.Option>
+            <Select.Option value={0}>Inactive</Select.Option>
           </Select>
         </Form.Item>
       </Form>

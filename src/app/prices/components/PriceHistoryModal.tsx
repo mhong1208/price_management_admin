@@ -45,12 +45,12 @@ const PriceHistoryModal: React.FC<PriceHistoryModalProps> = ({
 
   const columns = [
     {
-      title: 'Ngày hiệu lực',
+      title: 'Effective Date',
       dataIndex: 'effectiveDate',
       key: 'effectiveDate',
     },
     {
-      title: 'Giá cũ',
+      title: 'Old Price',
       dataIndex: 'oldPrice',
       key: 'oldPrice',
       render: (price: number) => (
@@ -60,7 +60,7 @@ const PriceHistoryModal: React.FC<PriceHistoryModalProps> = ({
       ),
     },
     {
-      title: 'Giá mới',
+      title: 'New Price',
       dataIndex: 'newPrice',
       key: 'newPrice',
       render: (price: number, record: PriceHistory) => (
@@ -70,7 +70,7 @@ const PriceHistoryModal: React.FC<PriceHistoryModalProps> = ({
       ),
     },
     {
-      title: 'Hành động',
+      title: 'Action',
       dataIndex: 'action',
       key: 'action',
       render: (action: string) => (
@@ -80,13 +80,13 @@ const PriceHistoryModal: React.FC<PriceHistoryModalProps> = ({
       ),
     },
     {
-      title: 'Ghi chú',
+      title: 'Notes',
       dataIndex: 'notes',
       key: 'notes',
       ellipsis: true,
     },
     {
-      title: 'Thời gian cập nhật',
+      title: 'Update Time',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date: string) => formatDateTimeVN(date),
@@ -97,7 +97,7 @@ const PriceHistoryModal: React.FC<PriceHistoryModalProps> = ({
     <Modal
       title={
         <Space orientation="vertical" size={0}>
-          <Text strong style={{ fontSize: '16px' }}>Lịch sử thay đổi giá</Text>
+          <Text strong style={{ fontSize: '16px' }}>Price Change History</Text>
           <Text type="secondary" style={{ fontSize: '13px' }}>
             {itemName} | {supplierName}
           </Text>

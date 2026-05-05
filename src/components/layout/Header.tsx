@@ -23,12 +23,12 @@ const Header: React.FC<HeaderProps> = ({ collapsed, onToggle }) => {
     {
       key: 'profile',
       icon: <UserOutlined />,
-      label: 'Thông tin cá nhân',
+      label: 'My Profile',
     },
     {
       key: 'settings',
       icon: <SettingOutlined />,
-      label: 'Cài đặt',
+      label: 'Settings',
     },
     {
       type: 'divider',
@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ collapsed, onToggle }) => {
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Đăng xuất',
+      label: 'Sign Out',
       danger: true,
     },
   ];

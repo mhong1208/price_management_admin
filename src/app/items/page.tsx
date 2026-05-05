@@ -54,7 +54,7 @@ const ItemsPage = () => {
       setItems(response.items);
       setTotalCount(response.totalCount);
     } catch (error) {
-      message.error('Không thể tải danh sách hàng hóa');
+      message.error('Failed to load item list');
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ const ItemsPage = () => {
       setIsViewOnly(true);
       setIsDrawerOpen(true);
     } catch (error) {
-      message.error('Không thể tải thông tin chi tiết mặt hàng');
+      message.error('Failed to load item details');
     } finally {
       setLoading(false);
     }
@@ -92,15 +92,15 @@ const ItemsPage = () => {
       setLoading(true);
       if (selectedItem) {
         await itemService.updateItem(selectedItem.id.toString(), values);
-        message.success('Cập nhật hàng hóa thành công');
+        message.success('Item updated successfully');
       } else {
         await itemService.createItem(values);
-        message.success('Thêm mới hàng hóa thành công');
+        message.success('New item created successfully');
       }
       setIsDrawerOpen(false);
       fetchItems();
     } catch (error) {
-      message.error('Lỗi khi lưu hàng hóa');
+      message.error('Error saving item');
     } finally {
       setLoading(false);
     }
@@ -108,18 +108,18 @@ const ItemsPage = () => {
 
   const handleDelete = (item: Item) => {
     modal.confirm({
-      title: 'Xác nhận xóa',
-      content: `Bạn có chắc chắn muốn xóa hàng hóa "${item.itemName}"?`,
-      okText: 'Xóa',
+      title: 'Confirm Delete',
+      content: `Are you sure you want to delete item "${item.itemName}"?`,
+      okText: 'Delete',
       okType: 'danger',
-      cancelText: 'Hủy',
+      cancelText: 'Cancel',
       onOk: async () => {
         try {
           await itemService.deleteItem(item.id.toString());
-          message.success('Xóa hàng hóa thành công');
+          message.success('Item deleted successfully');
           fetchItems();
         } catch (error) {
-          message.error('Lỗi khi xóa hàng hóa');
+          message.error('Error deleting item');
         }
       },
     });
@@ -143,22 +143,22 @@ const ItemsPage = () => {
         itemService.updateItem(item.id.toString(), item)
       );
       await Promise.all(updatePromises);
-      message.success(`Đã lưu ${changes.size} thay đổi thành công`);
+      message.success(`Saved ${changes.size} changes successfully`);
       setChanges(new Map());
       fetchItems();
     } catch (error) {
-      message.error('Lỗi khi lưu các thay đổi');
+      message.error('Error saving changes');
     } finally {
       setLoading(false);
     }
   };
 
   const columnDefs: any[] = [
-    { field: 'itemCode', headerName: 'Mã Hàng hóa', minWidth: 180, editable: true },
-    { field: 'itemName', headerName: 'Tên Hàng hóa', minWidth: 200, editable: true },
+    { field: 'itemCode', headerName: 'Item Code', minWidth: 180, editable: true },
+    { field: 'itemName', headerName: 'Item Name', minWidth: 200, editable: true },
     {
       field: 'unit',
-      headerName: 'Đơn vị',
+      headerName: 'Unit',
       minWidth: 100,
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -169,7 +169,7 @@ const ItemsPage = () => {
     },
     {
       field: 'category',
-      headerName: 'Danh mục',
+      headerName: 'Category',
       minWidth: 150,
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -180,7 +180,7 @@ const ItemsPage = () => {
     },
     {
       field: 'status',
-      headerName: 'Trạng thái',
+      headerName: 'Status',
       minWidth: 120,
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -189,12 +189,12 @@ const ItemsPage = () => {
       },
       cellRenderer: (params: any) => (
         <Tag color={params.value === 1 ? 'green' : 'red'}>
-          {params.value === 1 ? 'Hoạt động' : 'Ngừng hoạt động'}
+          {params.value === 1 ? 'Active' : 'Inactive'}
         </Tag>
       )
     },
     {
-      headerName: 'Thao tác',
+      headerName: 'Actions',
       minWidth: 100,
       pinned: 'right',
       cellRenderer: (params: any) => {
@@ -218,11 +218,11 @@ const ItemsPage = () => {
         items={[
           {
             key: 'filter',
-            label: 'Bộ lọc tìm kiếm',
+            label: 'Search Filters',
             children: (
               <Space wrap>
                 <Input
-                  placeholder="Tìm theo mã hoặc tên..."
+                  placeholder="Search by code or name..."
                   prefix={<SearchOutlined />}
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
@@ -230,7 +230,7 @@ const ItemsPage = () => {
                   allowClear
                 />
                 <Select
-                  placeholder="Chọn danh mục"
+                  placeholder="Select category"
                   style={{ width: 220 }}
                   allowClear
                   value={categoryFilter}
@@ -241,14 +241,14 @@ const ItemsPage = () => {
                   ))}
                 </Select>
                 <Select
-                  placeholder="Trạng thái"
+                  placeholder="Status"
                   style={{ width: 160 }}
                   allowClear
                   value={statusFilter}
                   onChange={(value) => { setStatusFilter(value); setCurrentPage(1); }}
                 >
-                  <Select.Option value={1}>Hoạt động</Select.Option>
-                  <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+                  <Select.Option value={1}>Active</Select.Option>
+                  <Select.Option value={0}>Inactive</Select.Option>
                 </Select>
 
               </Space>
@@ -263,7 +263,7 @@ const ItemsPage = () => {
             icon={<PlusOutlined />}
             onClick={handleAdd}
           >
-            Thêm Hàng hóa
+            Add Item
           </Button>
           {changes.size > 0 && (
             <Button
@@ -273,7 +273,7 @@ const ItemsPage = () => {
               onClick={handleBulkSave}
               loading={loading}
             >
-              Lưu {changes.size} thay đổi
+              Save {changes.size} changes
             </Button>
           )}
         </Space>
@@ -292,7 +292,7 @@ const ItemsPage = () => {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
         <Typography.Text type="secondary">
-          Hiển thị {items.length} / {totalCount} bản ghi
+          Showing {items.length} / {totalCount} records
         </Typography.Text>
         <Pagination
           current={currentPage}

@@ -22,11 +22,11 @@ const TableActions: React.FC<TableActionsProps> = ({
   onView,
   onSave,
   onHistory,
-  editTooltip = 'Chỉnh sửa',
-  deleteTooltip = 'Xóa',
-  viewTooltip = 'Xem chi tiết',
-  saveTooltip = 'Lưu thay đổi',
-  historyTooltip = 'Lịch sử thay đổi',
+  editTooltip = 'Edit',
+  deleteTooltip = 'Delete',
+  viewTooltip = 'View Details',
+  saveTooltip = 'Save Changes',
+  historyTooltip = 'Price History',
   isSaving = false,
 }) => {
   return (

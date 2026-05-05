@@ -2,6 +2,7 @@ import { Drawer, Form, Input, Button, Select, Space, Row, Col, Table, Typography
 import { Item, SupplierPrice } from '@/interfaces/item';
 import { ITEM_UNITS, ITEM_CATEGORIES } from '@/constants/item-enums';
 import { useEffect } from 'react';
+import { formatDateVN } from '@/utils/date-utils';
 
 const { Text } = Typography;
 
@@ -44,7 +45,7 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
 
   const supplierColumns = [
     {
-      title: 'Nhà cung cấp',
+      title: 'Supplier',
       dataIndex: ['supplier', 'supplierName'],
       key: 'supplierName',
       render: (text: string, record: SupplierPrice) => (
@@ -55,7 +56,7 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
       )
     },
     {
-      title: 'Giá',
+      title: 'Price',
       dataIndex: 'price',
       key: 'price',
       render: (price: number, record: SupplierPrice) => (
@@ -65,25 +66,26 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
       )
     },
     {
-      title: 'Ngày hiệu lực',
+      title: 'Effective Date',
       dataIndex: 'effectiveDate',
       key: 'effectiveDate',
+      render: (date: string) => formatDateVN(date),
     },
   ];
 
   return (
     <Drawer
-      title={readOnly ? 'Chi tiết hàng hóa' : (isEdit ? 'Chỉnh sửa hàng hóa' : 'Thêm mới hàng hóa')}
+      title={readOnly ? 'Item Details' : (isEdit ? 'Edit Item' : 'Add New Item')}
       size='large'
       onClose={onClose}
       open={open}
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={onClose}>{readOnly ? 'Đóng' : 'Hủy'}</Button>
+            <Button onClick={onClose}>{readOnly ? 'Close' : 'Cancel'}</Button>
             {!readOnly && (
               <Button onClick={handleSubmit} type="primary" loading={loading}>
-                {isEdit ? 'Cập nhật' : 'Thêm mới'}
+                {isEdit ? 'Update' : 'Add New'}
               </Button>
             )}
           </Space>
@@ -98,26 +100,26 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
       >
         <Form.Item
           name="itemCode"
-          label="Mã hàng hóa"
-          tooltip="Hệ thống tự động sinh mã nếu để trống"
+          label="Item Code"
+          tooltip="System automatically generates a code if left empty"
         >
-          <Input placeholder="Tự động sinh mã" disabled={isEdit} />
+          <Input placeholder="Auto-generate code" disabled={isEdit} />
         </Form.Item>
         <Form.Item
           name="itemName"
-          label="Tên hàng hóa"
-          rules={[{ required: true, message: 'Vui lòng nhập tên hàng hóa' }]}
+          label="Item Name"
+          rules={[{ required: true, message: 'Please enter item name' }]}
         >
-          <Input placeholder="Ví dụ: Màn hình Dell" />
+          <Input placeholder="Example: Dell Monitor" />
         </Form.Item>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="unit"
-              label="Đơn vị"
-              rules={[{ required: true, message: 'Vui lòng chọn đơn vị' }]}
+              label="Unit"
+              rules={[{ required: true, message: 'Please select unit' }]}
             >
-              <Select placeholder="Chọn đơn vị">
+              <Select placeholder="Select unit">
                 {ITEM_UNITS.map(unit => (
                   <Select.Option key={unit.code} value={unit.code}>{unit.name}</Select.Option>
                 ))}
@@ -127,10 +129,10 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
           <Col span={12}>
             <Form.Item
               name="category"
-              label="Danh mục"
-              rules={[{ required: true, message: 'Vui lòng chọn danh mục' }]}
+              label="Category"
+              rules={[{ required: true, message: 'Please select category' }]}
             >
-              <Select placeholder="Chọn danh mục">
+              <Select placeholder="Select category">
                 {ITEM_CATEGORIES.map(cat => (
                   <Select.Option key={cat.code} value={cat.code}>{cat.name}</Select.Option>
                 ))}
@@ -140,26 +142,26 @@ const ItemDrawer: React.FC<ItemDrawerProps> = ({
         </Row>
         <Form.Item
           name="description"
-          label="Mô tả"
-          tooltip="Thông tin mô tả về hàng hóa"
+          label="Description"
+          tooltip="Detailed information about the item"
         >
-          <Input.TextArea rows={4} placeholder="Ví dụ: Hàng nhập khẩu" />
+          <Input.TextArea rows={4} placeholder="Example: Imported goods" />
         </Form.Item>
         <Form.Item
           name="status"
-          label="Trạng thái"
-          rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
+          label="Status"
+          rules={[{ required: true, message: 'Please select status' }]}
         >
           <Select>
-            <Select.Option value={1}>Hoạt động</Select.Option>
-            <Select.Option value={0}>Ngừng hoạt động</Select.Option>
+            <Select.Option value={1}>Active</Select.Option>
+            <Select.Option value={0}>Inactive</Select.Option>
           </Select>
         </Form.Item>
       </Form>
 
       {readOnly && initialValues?.supplierPrices && initialValues.supplierPrices.length > 0 && (
         <>
-          <Divider>Danh sách nhà cung cấp & Giá</Divider>
+          <Divider>Linked Suppliers & Prices</Divider>
           <Table
             dataSource={initialValues.supplierPrices}
             columns={supplierColumns}

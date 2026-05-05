@@ -78,17 +78,17 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
 
   return (
     <Drawer
-      title={readOnly ? 'Chi tiết bảng giá' : (isEdit ? 'Chỉnh sửa bảng giá' : 'Thiết lập giá mới')}
+      title={readOnly ? 'Price Details' : (isEdit ? 'Edit Price' : 'Setup New Price')}
       size='large'
       onClose={onClose}
       open={open}
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={onClose}>{readOnly ? 'Đóng' : 'Hủy'}</Button>
+            <Button onClick={onClose}>{readOnly ? 'Close' : 'Cancel'}</Button>
             {!readOnly && (
               <Button onClick={handleSubmit} type="primary" loading={loading}>
-                {isEdit ? 'Cập nhật' : 'Lưu lại'}
+                {isEdit ? 'Update' : 'Save'}
               </Button>
             )}
           </Space>
@@ -105,12 +105,12 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
           <Col span={12}>
             <Form.Item
               name="itemId"
-              label="Mặt hàng"
-              rules={[{ required: true, message: 'Vui lòng chọn mặt hàng' }]}
+              label="Item"
+              rules={[{ required: true, message: 'Please select an item' }]}
             >
               <Select
                 showSearch
-                placeholder="Chọn mặt hàng"
+                placeholder="Select item"
                 optionFilterProp="children"
                 loading={fetching}
               >
@@ -125,12 +125,12 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
           <Col span={12}>
             <Form.Item
               name="supplierId"
-              label="Nhà cung cấp"
-              rules={[{ required: true, message: 'Vui lòng chọn nhà cung cấp' }]}
+              label="Supplier"
+              rules={[{ required: true, message: 'Please select a supplier' }]}
             >
               <Select
                 showSearch
-                placeholder="Chọn nhà cung cấp"
+                placeholder="Select supplier"
                 optionFilterProp="children"
                 loading={fetching}
               >
@@ -148,8 +148,8 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
           <Col span={8}>
             <Form.Item
               name="price"
-              label="Giá"
-              rules={[{ required: true, message: 'Vui lòng nhập giá' }]}
+              label="Price"
+              rules={[{ required: true, message: 'Please enter price' }]}
             >
               <InputNumber
                 style={{ width: '100%' }}
@@ -162,8 +162,8 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
           <Col span={8}>
             <Form.Item
               name="currency"
-              label="Tiền tệ"
-              rules={[{ required: true, message: 'Vui lòng chọn tiền tệ' }]}
+              label="Currency"
+              rules={[{ required: true, message: 'Please select currency' }]}
             >
               <Select>
                 {CURRENCIES.map(c => (
@@ -175,8 +175,8 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
           <Col span={8}>
             <Form.Item
               name="effectiveDate"
-              label="Ngày hiệu lực"
-              rules={[{ required: true, message: 'Vui lòng chọn ngày hiệu lực' }]}
+              label="Effective Date"
+              rules={[{ required: true, message: 'Please select effective date' }]}
             >
               <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
             </Form.Item>
@@ -185,9 +185,9 @@ const PriceDrawer: React.FC<PriceDrawerProps> = ({
 
         <Form.Item
           name="notes"
-          label="Ghi chú"
+          label="Notes"
         >
-          <Input.TextArea rows={4} placeholder="Nhập ghi chú chi tiết..." />
+          <Input.TextArea rows={4} placeholder="Enter detailed notes..." />
         </Form.Item>
       </Form>
     </Drawer>
